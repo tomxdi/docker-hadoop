@@ -1,0 +1,27 @@
+git clone https://github.com/tomxdi/docker-hadoop.git
+cd docker-hadoop.git
+git branch 2.0.0-hadoop3.2.4-java8 remotes/origin/2.0.0-hadoop3.2.1-java8
+git checkout 2.0.0-hadoop3.2.4-java8
+
+find . -print0 | xargs -0 grep 3.2.1 2>/dev/null  | grep -v \.git
+./resourcemanager/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./nodemanager/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./historyserver/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./docker-compose.yml:    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+./docker-compose.yml:    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+./docker-compose.yml:    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+./docker-compose.yml:    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+./docker-compose.yml:    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+./namenode/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./base/Dockerfile:ENV HADOOP_VERSION 3.2.1
+./datanode/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./Makefile:     docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} bde2020/hadoop-base:$(current_branch) hdfs dfs -copyFromLocal -f /opt/hadoop-3.2.1/README.txt /input/
+./hadoop.env:MAPRED_CONF_yarn_app_mapreduce_am_env=HADOOP_MAPRED_HOME=/opt/hadoop-3.2.1/
+./hadoop.env:MAPRED_CONF_mapreduce_map_env=HADOOP_MAPRED_HOME=/opt/hadoop-3.2.1/
+./hadoop.env:MAPRED_CONF_mapreduce_reduce_env=HADOOP_MAPRED_HOME=/opt/hadoop-3.2.1/
+./submit/Dockerfile:FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+./docker-compose-v3.yml:    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+./docker-compose-v3.yml:    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+./docker-compose-v3.yml:    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+./docker-compose-v3.yml:    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+./docker-compose-v3.yml:    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
